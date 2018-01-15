@@ -1,14 +1,11 @@
-# RailsSecurityTxt
-Short description and motivation.
+# Security.txt for you Rails/Rack App
 
-## Usage
-How to use my plugin.
+This gem provides a Rack middleware that will provides a nicely formatted [security.txt](https://tools.ietf.org/html/draft-foudil-securitytxt-02) for your application.
 
 ## Installation
 Add this line to your application's Gemfile:
-
 ```ruby
-gem 'rails_security_txt'
+  gem 'securitytxt'
 ```
 
 And then execute:
@@ -16,13 +13,25 @@ And then execute:
 $ bundle
 ```
 
-Or install it yourself as:
-```bash
-$ gem install rails_security_txt
+### Rails app
+Create an initializer with the policy you want to set:
+```ruby
+# config/initializers/securitytxt.rb
+SecurityTxt.contact = "me@organization.com"
+SecurityTxt.encryption = "https://www.mykey.com/pgp-key.txt",
 ```
 
-## Contributing
-Contribution directions go here.
+### Other Rack app
+Add the middleware to your chain in your config.ru
+```
+require 'securitytxt'
+
+policy = {
+  "contact" => "me@organization.com",
+  "encryption" => "https://www.mykey.com/pgp-key.txt"
+}
+use SecurityTxt::Middleware, policy
+```
 
 ## License
 The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
