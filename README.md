@@ -18,7 +18,7 @@ Create an initializer with the policy you want to set:
 ```ruby
 # config/initializers/securitytxt.rb
 SecurityTxt.contact = "me@organization.com"
-SecurityTxt.encryption = "https://www.mykey.com/pgp-key.txt",
+SecurityTxt.encryption = "https://www.mykey.com/pgp-key.txt"
 ```
 
 ### Other Rack app
