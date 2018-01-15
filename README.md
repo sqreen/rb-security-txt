@@ -4,6 +4,12 @@ This gem provides a Rack middleware and matching Rails engine
 that will provides a nicely formatted [security.txt](https://tools.ietf.org/html/draft-foudil-securitytxt-02) for your application.
 It also includes a generator and parser of security.txt files.
 
+References:
+* [security.txt rfc draft](https://tools.ietf.org/html/draft-foudil-securitytxt-02)
+* [security.txt project on github](https://github.com/securitytxt/security-txt)
+* [securitytxt.org](https://securitytxt.org/)
+
+
 ## Installation
 Add this line to your application's Gemfile:
 ```ruby
@@ -44,7 +50,7 @@ Simply passing a string should be enough to get data back
 require "securitytxt/parser"
 require "open-uri"
 SecurityTxt::Parser.new.parse(open("https://securitytxt.org/.well-known/security.txt").read)
-# outputs {"contact"=>"https://hackerone.com/ed", "encryption"=>"https://keybase.pub/edoverflow/pgp_key.asc", "acknowledgements"=>"https://hackerone.com/ed/thanks"}
+# Outputs {"contact"=>"https://hackerone.com/ed", "encryption"=>"https://keybase.pub/edoverflow/pgp_key.asc", "acknowledgements"=>"https://hackerone.com/ed/thanks"}
 ```
 
 ## Generating a Security.txt
