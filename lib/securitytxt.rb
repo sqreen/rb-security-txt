@@ -17,7 +17,8 @@ module SecurityTxt
     class Application < Rails::Application
       config = proc do
         SecurityTxt::SECTIONS.inject({}) do |acc, v|
-          acc[v] = SecurityTxt.send(v)
+          vd = SecurityTxt.send(v)
+          acc[v] = vd unless vd.blank?
           acc
         end
       end
