@@ -1,0 +1,70 @@
+#!/usr/bin/env ruby
+# Securitytxt command-line tool
+#
+require 'optparse'
+require 'open-uri'
+require 'securitytxt/parser'
+require 'securitytxt/generator'
+
+class String
+  def red; colorize(self, "\e[1m\e[31m"); end
+  def dark_green; colorize(self, "\e[32m"); end
+  def underline; colorize(self, "\e[4m"); end
+  def bold; colorize(self, "\e[1m"); end
+  def colorize(text, color_code) "#{color_code}#{text}\e[0m" end
+end
+
+options = {}
+option_parser = OptionParser.new
+option_parser.banner = "#{"Securitytxt".bold} - A CLI tool to parse and generate securitytxt content."
+option_parser.set_summary_indent '   '
+option_parser.separator "\nHelp menu:".underline
+option_parser.on('-p', '--parse FILE | URL', 'Parse securitytxt file or URL') {|v| options[:parse] = v}
+option_parser.on('-g', '--generate', 'Generate a securitytxt string.') {|v| options[:generate] = v}
+option_parser.on('-c', '--contact DETAILS', Array, 'List of contact details separated by comma(,) without spaces. (used with -g/--generate)') {|v| options[:contact] = v}
+option_parser.on('-e', '--encryption URL', 'Link to a page which contains your key.(used with -g/--generate)') {|v| options[:encryption] = v}
+option_parser.on('-a', '--acknowledgements URL', 'Link to a page where security researchers are recognized for their reports.(used with -g/--generate)') {|v| options[:ack] = v}
+option_parser.on('-h', '--help', 'Show this help message') {option_parser}
+option_parser.on_tail "\nExample:".underline
+option_parser.on_tail"  securitytxt --parse https://securitytxt.org/.well-known/security.txt"
+option_parser.on_tail"  securitytxt --generate -c https://hackerone.com/ed -e https://keybase.pub/edoverflow/pgp_key.asc -a https://hackerone.com/ed/thanks"
+
+begin
+  option_parser.parse!
+  case
+    when options[:parse]
+      securitytxt = SecurityTxt::Parser.new.parse(open(options[:parse]).read)
+      securitytxt.each do |key, val|
+        puts "- #{key.ljust(16).bold} : #{[val].join(', ')}"
+      end
+      puts "\n-[".bold + "Hash".dark_green + "]---".bold
+      puts securitytxt
+    when options[:generate] && options[:contact] && options[:encryption] && options[:ack]
+      data = {"contact" => options[:contact], "encryption" => options[:encryption], "acknowledgements" => options[:ack]}
+      generated =  SecurityTxt::Generator.new(data).generate
+      puts generated
+      puts "\n-[".bold + "Hash".dark_green + "]---".bold
+      puts SecurityTxt::Parser.new.parse(generated)
+    when options[:generate] && (options[:contact] || options[:encryption] || options[:akc]).nil?
+      puts '[!] '.red + "Missing mandatory options, -g/--generate requires '-c/--contact', '-e/--encrytion', '-a/--ack' options."
+    when options[:contact].nil?
+      puts '[!] '.red + "Missing mandatory option '-c/--contact'"
+    when options[:encryption].nil?
+      puts '[!] '.red + "Missing mandatory option '-e/--encryption'"
+    when options[:ack].nil?
+      puts '[!] '.red + "Missing mandatory option '-a/--ack'"
+    else
+      puts option_parser
+  end
+rescue OptionParser::MissingArgument => e
+  e.args.each {|arg| puts '[!] '.red + "#{e.reason.capitalize} for '#{arg}' option."}
+  puts option_parser
+rescue OptionParser::InvalidOption => e
+  puts '[!] '.red + "#{e}"
+  puts option_parser
+rescue Exception => e
+  puts e.backtrace
+  puts e.backtrace_locations
+  puts e
+end
+
