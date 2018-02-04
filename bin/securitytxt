@@ -24,7 +24,7 @@ option_parser.on('-g', '--generate', 'Generate a securitytxt string.') {|v| opti
 option_parser.on('-c', '--contact DETAILS', Array, 'List of contact details separated by comma(,) without spaces. (used with -g/--generate)') {|v| options[:contact] = v}
 option_parser.on('-e', '--encryption URL', 'Link to a page which contains your key.(used with -g/--generate)') {|v| options[:encryption] = v}
 option_parser.on('-a', '--acknowledgements URL', 'Link to a page where security researchers are recognized for their reports.(used with -g/--generate)') {|v| options[:ack] = v}
-option_parser.on('-h', '--help', 'Show this help message') {option_parser}
+option_parser.on('-h', '--help', 'Show this help message') {|v| option_parser}
 option_parser.on_tail "\nExample:".underline
 option_parser.on_tail"  securitytxt --parse https://securitytxt.org/.well-known/security.txt"
 option_parser.on_tail"  securitytxt --generate -c https://hackerone.com/ed -e https://keybase.pub/edoverflow/pgp_key.asc -a https://hackerone.com/ed/thanks"
@@ -47,11 +47,11 @@ begin
       puts SecurityTxt::Parser.new.parse(generated)
     when options[:generate] && (options[:contact] || options[:encryption] || options[:akc]).nil?
       puts '[!] '.red + "Missing mandatory options, -g/--generate requires '-c/--contact', '-e/--encrytion', '-a/--ack' options."
-    when options[:contact].nil?
+    when options[:generate] && options[:contact].nil?
       puts '[!] '.red + "Missing mandatory option '-c/--contact'"
-    when options[:encryption].nil?
+    when options[:generate] && options[:encryption].nil?
       puts '[!] '.red + "Missing mandatory option '-e/--encryption'"
-    when options[:ack].nil?
+    when options[:generate] && options[:ack].nil?
       puts '[!] '.red + "Missing mandatory option '-a/--ack'"
     else
       puts option_parser
