@@ -65,5 +65,19 @@ puts SecurityTxt::Generator.new({"contact"=>"https://hackerone.com/ed", "encrypt
 # Acknowledgements: https://hackerone.com/ed/thanks
 ```
 
+## CLI usage
+
+```
+Securitytxt - A CLI tool to parse and generate securitytxt content.
+
+Help menu:
+   -p, --parse FILE | URL           Parse securitytxt file or URL
+   -g, --generate                   Generate a securitytxt string.
+   -c, --contact DETAILS            List of contact details separated by comma(,) without spaces. (used with -g/--generate)
+   -e, --encryption URL             Link to a page which contains your key.(used with -g/--generate)
+   -a, --acknowledgements URL       Link to a page where security researchers are recognized for their reports.(used with -g/--generate)
+   -h, --help                       Show this help message
+```
+
 ## License
 The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
