@@ -5,6 +5,7 @@ require 'optparse'
 require 'open-uri'
 require 'securitytxt/parser'
 require 'securitytxt/generator'
+require 'securitytxt/version'
 
 class String
   def red; colorize(self, "\e[1m\e[31m"); end
@@ -24,6 +25,7 @@ option_parser.on('-g', '--generate', 'Generate a securitytxt string.') {|v| opti
 option_parser.on('-c', '--contact DETAILS', Array, 'List of contact details separated by comma(,) without spaces. (used with -g/--generate)') {|v| options[:contact] = v}
 option_parser.on('-e', '--encryption URL', 'Link to a page which contains your key.(used with -g/--generate)') {|v| options[:encryption] = v}
 option_parser.on('-a', '--acknowledgements URL', 'Link to a page where security researchers are recognized for their reports.(used with -g/--generate)') {|v| options[:ack] = v}
+option_parser.on('-v', '--version', 'Show securitytxt version') {|v| options[:version] = v}
 option_parser.on('-h', '--help', 'Show this help message') {|v| option_parser}
 option_parser.on_tail "\nExample:".underline
 option_parser.on_tail"  securitytxt --parse https://securitytxt.org/.well-known/security.txt"
@@ -32,6 +34,8 @@ option_parser.on_tail"  securitytxt --generate -c https://hackerone.com/ed -e ht
 begin
   option_parser.parse!
   case
+    when options[:version]
+      puts SecurityTxt::VERSION
     when options[:parse]
       securitytxt = SecurityTxt::Parser.new.parse(open(options[:parse]).read)
       securitytxt.each do |key, val|
@@ -41,6 +45,7 @@ begin
       puts securitytxt
     when options[:generate] && options[:contact] && options[:encryption] && options[:ack]
       data = {"contact" => options[:contact], "encryption" => options[:encryption], "acknowledgements" => options[:ack]}
+      puts "-[".bold + "security.txt".dark_green + "]---".bold
       generated =  SecurityTxt::Generator.new(data).generate
       puts generated
       puts "\n-[".bold + "Hash".dark_green + "]---".bold
