@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    securitytxt (0.1.1)
+    securitytxt (0.2.0)
 
 GEM
   remote: https://rubygems.org/
@@ -46,11 +46,13 @@ GEM
     arel (8.0.0)
     builder (3.2.3)
     concurrent-ruby (1.0.5)
+    crass (1.0.4)
     erubi (1.6.1)
     globalid (0.4.0)
       activesupport (>= 4.2.0)
     i18n (0.8.6)
-    loofah (2.0.3)
+    loofah (2.2.2)
+      crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
     mail (2.6.6)
       mime-types (>= 1.16, < 4)
@@ -61,7 +63,7 @@ GEM
     mini_portile2 (2.3.0)
     minitest (5.10.3)
     nio4r (2.1.0)
-    nokogiri (1.8.1)
+    nokogiri (1.8.2)
       mini_portile2 (~> 2.3.0)
     rack (2.0.3)
     rack-test (0.7.0)
@@ -81,8 +83,8 @@ GEM
     rails-dom-testing (2.0.3)
       activesupport (>= 4.2.0)
       nokogiri (>= 1.6)
-    rails-html-sanitizer (1.0.3)
-      loofah (~> 2.0)
+    rails-html-sanitizer (1.0.4)
+      loofah (~> 2.2, >= 2.2.2)
     railties (5.1.4)
       actionpack (= 5.1.4)
       activesupport (= 5.1.4)
@@ -115,4 +117,4 @@ DEPENDENCIES
   sqlite3
 
 BUNDLED WITH
-   1.16.0
+   1.16.1
