@@ -1,7 +1,7 @@
 # Security.txt toolbox for your Ruby app
 
 This gem provides a Rack middleware and matching Rails engine
-that will provides a nicely formatted [security.txt](https://tools.ietf.org/html/draft-foudil-securitytxt-02) for your application.
+that will provide a nicely formatted [security.txt](https://tools.ietf.org/html/draft-foudil-securitytxt-02) for your application.
 It also includes a generator and parser of security.txt files.
 
 References:
