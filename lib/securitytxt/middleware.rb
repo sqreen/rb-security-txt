@@ -12,9 +12,12 @@ module SecurityTxt
       sections = @sections
       sections = @sections.call if @sections.respond_to?(:call)
       if req.path == '/.well-known/security.txt' && !sections.empty?
-        return Rack::Response.new(Generator.new(sections).generate, 200,
-                                  'Content-Type' => 'text/plain')
+        headers = { 'Content-Type' => 'text/plain' }
+        response_text = Generator.new(sections).generate
+
+        return [200, headers, [response_text]]
       end
+
       @app.call(env)
     end
   end
