@@ -3,7 +3,7 @@ require 'securitytxt/middleware'
 
 # Rails SecurityTXT generator
 module SecurityTxt
-  SECTIONS = %i[acknowledgment contact encryption signature policy].freeze
+  SECTIONS = %i[acknowledgment expires prefered_languages contact encryption signature policy].freeze
   SECTIONS.each do |section|
     if defined?(Rails)
       mattr_accessor section
