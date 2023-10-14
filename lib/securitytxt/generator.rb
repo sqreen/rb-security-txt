@@ -9,11 +9,12 @@ module SecurityTxt
     def generate
       ret = StringIO.new
       sections.each do |name, value|
+        key = name.to_s.split("_").map { |k| capitalize(k) }.join('-')
         next if value.nil? || value.empty?
         if value.is_a?(Array)
-          value.each { |subvalue| ret << "#{capitalize(name)}: #{subvalue}\n" }
+          value.each { |subvalue| ret << "#{key}: #{subvalue}\n" }
         else
-          ret << "#{capitalize(name)}: #{value}\n"
+          ret << "#{key}: #{value}\n"
         end
       end
       ret.string
